@@ -9,12 +9,12 @@ async function getInfectedFunction(message) {
     let member = message.mentions.users.first();
     if(!member) return;
     let infection = config.infectionRoleID;
-    if (message.guild.members.get(author).roles.has(infection)) return;
-    if (message.guild.members.get(member.id).roles.has(infection)) {
+    if (message.guild.members.cache.get(author).roles.cache.get(infection)) return;
+    if (message.guild.members.cache.get(member.id).roles.cache.get(infection)) {
         let chance = Math.random() * 100;
         if (chance <= 100) {
-              await(message.member.addRole(infection));
-              message.channel.send(`This user is now infected!`);
+              await(message.guild.members.cache.get(author).roles.add(infection));
+              message.channel.send(`<@${author}> has been infected!`);
         };
     }
 }
@@ -23,12 +23,12 @@ async function giveInfectionFunction(message) {
     let pingee = message.mentions.users.first();
     if(!pingee) return;
     let infection = config.infectionRoleID;
-    if(message.guild.members.get(pingee.id).roles.has(infection)) return;
-    if(message.member.roles.has(infection)) {
+    if(message.guild.members.cache.get(pingee.id).roles.cache.get(infection)) return;
+    if(message.member.roles.cache.get(infection)) {
         let chance = Math.random() * 100;
         if (chance <= 100) {
-            await(message.guild.members.get(pingee.id).addRole(infection));
-            message.channel.send(`You infected another user!`);
+            await(message.guild.members.cache.get(pingee.id).roles.add(infection));
+            message.channel.send(`<@${pingee.id}> has been infected by <@${message.author.id}>!`);
         };
     }
 }
